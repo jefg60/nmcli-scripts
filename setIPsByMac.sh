@@ -20,7 +20,9 @@ function get_ip {
 }
 
 function set_ip_by_mac {
-  true
+  mac=$1
+  new_ip=$2
+  nmcli con
 }
 
 eth0_mac=$(get_mac eth0)
@@ -28,7 +30,7 @@ eth0_ip=$(get_ip eth0)
 eth1_mac=$(get_mac eth1)
 eth1_ip=$(get_ip eth1)
 
-echo eth0: mac: $eth0_mac ip: $eth0_ip
-echo eth1: mac: $eth1_mac ip: $eth1_ip
+echo eth0: mac: $eth0_mac old ip: $eth0_ip
+echo eth1: mac: $eth1_mac old ip: $eth1_ip
 
 
