@@ -12,11 +12,16 @@ desired_mac=$1
 desired_ip=$2
 
 function get_mac {
-  nmcli -f general.hwaddr device show $1 | awk '{print $NF}'
+  nmcli --get-values general.hwaddr device show $1
 }
 
 function get_ip {
-  nmcli -f ip4.address device show $1 | awk '{print $NF}'
+  nmcli --get-values ip4.address device show $1
+}
+
+function get_uuid_by_device {
+  #e.g. get_uuid_by_device eth1
+  nmcli --get-values name,uuid,device con show | grep $1 | cut -d ":" -f2
 }
 
 function set_ip_by_mac {
