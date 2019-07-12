@@ -12,10 +12,12 @@ desired_mac=$1
 desired_ip=$2
 
 function get_mac {
+  #e.g. get_mac eth1
   nmcli --get-values general.hwaddr device show $1
 }
 
 function get_ip {
+  #e.g. get_ip eth1
   nmcli --get-values ip4.address device show $1
 }
 
