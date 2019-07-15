@@ -39,12 +39,13 @@ do
   echo $0 Checking "$(get_mac $i)"
   if [ "$(get_mac $i)" == "$desired_mac" ]
   then
-    if [ "$(get_ip $i)" == "$desired_ip" ]
+    if [[ $(get_ip $i) == *"$desired_ip"* ]]
     then
       echo $0 IP of "$i" is already "$desired_ip"
       exit 0
     fi
     echo $0 configuring "$i" with ip "$desired_ip"
+    nmcli con delete "static-$i" || echo $0 ERROR deleting "static-$i"
     nmcli con add con-name "static-$i" ifname "$i" type ethernet \
     ip4 "$desired_ip" gw4 "$desired_gw" && exit 0
     echo ERROR configuring "$i" failed
