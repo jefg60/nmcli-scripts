@@ -1,6 +1,7 @@
 #!/bin/bash
 
-syntax="$0 mac_to_configure ip_to_configure gw_to_configure"
+syntax="$0 mac_to_configure ip_to_configure/cidr gw_to_configure \n
+e.g. $0 FF:FF:FF:FF:FF:FF 192.168.34.1/24 192.168.34.1"
 
 if [ -z $3 ]
 then
@@ -44,9 +45,9 @@ do
       exit 0
     fi
     echo $0 configuring "$i" with ip "$desired_ip"
-    #nmcli con add con-name static-$i ifname $i type ethernet \
-    #ip4 $desired_ip gw4 $desired_gw && exit 0
+    nmcli con add con-name "static-$i" ifname "$i" type ethernet \
+    ip4 "$desired_ip" gw4 "$desired_gw" && exit 0
     echo ERROR configuring "$i" failed
-    exit 1
+    exit 2
   fi
 done
