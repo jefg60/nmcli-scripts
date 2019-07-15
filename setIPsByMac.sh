@@ -26,6 +26,11 @@ function get_ip {
   nmcli --get-values ip4.address device show $1
 }
 
+function get_uuid_by_device {
+  #e.g. get_uuid_by_device eth1
+  nmcli --get-values name,uuid,device con show | grep $1 | cut -d ":" -f2
+}
+
 #Get list of devices as array
 for i in $(nmcli --get-values general.device device show)
 do
@@ -47,7 +52,11 @@ do
       exit 0
     fi
     echo $0 configuring "$i" with ip "$desired_ip"
-    nmcli con delete "static-$i" || echo $0 ERROR deleting "static-$i"
+    uuids=$(get_uuid_by_device $i)
+    for u in $uuids
+    do
+      nmcli con delete "$u" || echo $0 ERROR deleting connection "$u"
+    done
     nmcli con add con-name "static-$i" ifname "$i" type ethernet \
     ip4 "$desired_ip" gw4 "$desired_gw" && exit 0
     echo ERROR configuring "$i" failed
