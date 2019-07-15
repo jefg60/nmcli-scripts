@@ -45,6 +45,8 @@ do
     fi
     echo $0 configuring "$i" with ip "$desired_ip"
     #nmcli con add con-name static-$i ifname $i type ethernet \
-    #ip4 $desired_ip gw4 $desired_gw
+    #ip4 $desired_ip gw4 $desired_gw && exit 0
+    echo ERROR configuring "$i" failed
+    exit 1
   fi
 done
