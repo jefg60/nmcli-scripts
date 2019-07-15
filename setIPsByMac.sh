@@ -19,7 +19,7 @@ function IPprefix_by_netmask {
 #get params with uppercase mac
 desired_mac=${1^^}
 desired_netmask=$3
-cidr=$(IPprefix_by_netmask $3)
+cidr=$(IPprefix_by_netmask $desired_netmask)
 desired_ip="$2$cidr"
 desired_gw=$4
 
