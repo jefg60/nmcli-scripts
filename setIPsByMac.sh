@@ -26,10 +26,10 @@ function get_ip {
 
 #Get list of devices as array
 for i in $(nmcli --get-values general.device device show)
-do 
+do
   devices+=($i)
 done
-  
+
 echo $0 got list of devices:
 echo ${devices[*]}
 
