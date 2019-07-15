@@ -9,7 +9,8 @@ then
   exit 1
 fi
 
-desired_mac=$1
+#get params with uppercase mac
+desired_mac=${1^^}
 desired_ip=$2
 desired_gw=$3
 
