@@ -1,20 +1,27 @@
 #!/bin/bash
 
-syntax="$0 mac_to_configure ip_to_configure/cidr gw_to_configure \n
-e.g. $0 FF:FF:FF:FF:FF:FF 192.168.34.1/24 192.168.34.1"
+syntax="$0 mac_to_configure ip_to_configure netmask gw_to_configure \n
+e.g. $0 FF:FF:FF:FF:FF:FF 192.168.34.1 255.255.255.0 192.168.34.1"
 
-if [ -z $3 ]
+if [ -z $4 ]
 then
   echo "Syntax: $syntax"
   exit 1
 fi
 
+echo $0 desired_mac is "$desired_mac"
+
+function IPprefix_by_netmask {
+#function returns prefix for given netmask in arg1
+ ipcalc -p 1.1.1.1 $1 | sed -n 's/^PREFIX=\(.*\)/\/\1/p'
+}
+
 #get params with uppercase mac
 desired_mac=${1^^}
-desired_ip=$2
-desired_gw=$3
-
-echo $0 desired_mac is "$desired_mac"
+desired_netmask=$3
+cidr=$(IPprefix_by_netmask $3)
+desired_ip="$2$cidr"
+desired_gw=$4
 
 function get_mac {
   #e.g. get_mac eth1
