@@ -42,11 +42,11 @@ echo ${devices[*]}
 
 for i in ${devices[*]}
 do
-  echo $0 Checking "$(get_mac $i)"
+  echo $0 Checking "$(get_mac $i) - $i"
   if [ "$(get_mac $i)" == "$desired_mac" ]
   then
     current_ip=$(get_ip $i)
-    if [[ $desired_ip == *"$current_ip"* ]]
+    if [ "$desired_ip" == "$current_ip" ]
     then
       echo $0 IP of "$i" is already "$current_ip"
       exit 0
