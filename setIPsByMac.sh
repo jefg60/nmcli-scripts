@@ -39,9 +39,10 @@ do
   echo $0 Checking "$(get_mac $i)"
   if [ "$(get_mac $i)" == "$desired_mac" ]
   then
-    if [[ $(get_ip $i) == *"$desired_ip"* ]]
+    current_ip=$(get_ip $i)
+    if [[ $desired_ip == *"$current_ip"* ]]
     then
-      echo $0 IP of "$i" is already "$desired_ip"
+      echo $0 IP of "$i" is already "$current_ip"
       exit 0
     fi
     echo $0 configuring "$i" with ip "$desired_ip"
