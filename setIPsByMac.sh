@@ -72,10 +72,14 @@ do
     if [ $desired_gw -eq 0 ]
     then
       nmcli con add con-name "static-$i" ifname "$i" type ethernet \
-      ip4 "$desired_ip" && exit 0
+      ip4 "$desired_ip" && \
+      nmcli con up con-name "static-$i" && \
+      exit 0
     else
       nmcli con add con-name "static-$i" ifname "$i" type ethernet \
-      ip4 "$desired_ip" gw4 "$desired_gw" && exit 0
+      ip4 "$desired_ip" gw4 "$desired_gw" && \
+      nmcli con up con-name "static-$i" && \
+      exit 0
     fi
     echo ERROR configuring "$i" failed
     exit 2
