@@ -1,6 +1,6 @@
 #!/bin/bash
 
-syntax="$0 mac_to_configure ip_to_configure netmask <gw_to_configure> \n
+syntax="$0 mac_to_configure ip_to_configure netmask <gw_to_configure>
 e.g. $0 FF:FF:FF:FF:FF:FF 192.168.34.1 255.255.255.0 192.168.34.1"
 
 if [ -z $3 ]
