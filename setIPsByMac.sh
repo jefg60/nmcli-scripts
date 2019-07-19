@@ -25,7 +25,7 @@ if [ ! -z $4 ]
 then
   desired_gw=$4
 else
-  desired_gw=0
+  desired_gw=none
 fi
 
 function get_mac {
@@ -69,16 +69,16 @@ do
     do
       nmcli con delete "$u" || echo $0 ERROR deleting connection "$u"
     done
-    if [ $desired_gw -eq 0 ]
+    if [ $desired_gw == none ]
     then
       nmcli con add con-name "static-$i" ifname "$i" type ethernet \
       ip4 "$desired_ip" && \
-      nmcli con up con-name "static-$i" && \
+      nmcli con up "static-$i" && \
       exit 0
     else
       nmcli con add con-name "static-$i" ifname "$i" type ethernet \
       ip4 "$desired_ip" gw4 "$desired_gw" && \
-      nmcli con up con-name "static-$i" && \
+      nmcli con up "static-$i" && \
       exit 0
     fi
     echo ERROR configuring "$i" failed
