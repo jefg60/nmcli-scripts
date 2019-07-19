@@ -1,9 +1,9 @@
 #!/bin/bash
 
-syntax="$0 mac_to_configure ip_to_configure netmask gw_to_configure \n
+syntax="$0 mac_to_configure ip_to_configure netmask <gw_to_configure> \n
 e.g. $0 FF:FF:FF:FF:FF:FF 192.168.34.1 255.255.255.0 192.168.34.1"
 
-if [ -z $4 ]
+if [ -z $3 ]
 then
   echo "Syntax: $syntax"
   exit 1
@@ -21,7 +21,12 @@ desired_mac=${1^^}
 desired_netmask=$3
 cidr=$(IPprefix_by_netmask $desired_netmask)
 desired_ip="$2$cidr"
-desired_gw=$4
+if [ ! -z $4 ]
+then
+  desired_gw=$4
+else
+  desired_gw=0
+fi
 
 function get_mac {
   #e.g. get_mac eth1
@@ -64,8 +69,14 @@ do
     do
       nmcli con delete "$u" || echo $0 ERROR deleting connection "$u"
     done
-    nmcli con add con-name "static-$i" ifname "$i" type ethernet \
-    ip4 "$desired_ip" gw4 "$desired_gw" && exit 0
+    if [ $desired_gw -eq 0 ]
+    then
+      nmcli con add con-name "static-$i" ifname "$i" type ethernet \
+      ip4 "$desired_ip" && exit 0
+    else
+      nmcli con add con-name "static-$i" ifname "$i" type ethernet \
+      ip4 "$desired_ip" gw4 "$desired_gw" && exit 0
+    fi
     echo ERROR configuring "$i" failed
     exit 2
   fi
