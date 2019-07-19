@@ -42,9 +42,8 @@ do
     uuids=$(get_uuid_by_device $i)
     for u in $uuids
     do
-      nmcli con delete "$u" || echo $0 ERROR deleting connection "$u"
+      nmcli con delete "$u" || echo "$0 ERROR deleting connection $u" && \
+      echo "ERROR: disabling $i failed" && exit 2
     done
-    echo ERROR disabling "$i" failed
-    exit 2
   fi
 done
