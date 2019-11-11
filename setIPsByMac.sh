@@ -9,8 +9,6 @@ then
   exit 1
 fi
 
-echo $0 desired_mac is "$desired_mac"
-
 function IPprefix_by_netmask {
 #function returns prefix for given netmask in arg1
  ipcalc -p 1.1.1.1 $1 | sed -n 's/^PREFIX=\(.*\)/\/\1/p'
@@ -18,6 +16,8 @@ function IPprefix_by_netmask {
 
 #get params with uppercase mac
 desired_mac=${1^^}
+echo $0 desired_mac is "$desired_mac"
+
 desired_netmask=$3
 cidr=$(IPprefix_by_netmask $desired_netmask)
 desired_ip="$2$cidr"
